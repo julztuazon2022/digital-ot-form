@@ -1,169 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital OT Form</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SPMS — Overtime Application Portal</title>
+  <style>
+    :root {
+      --spms-navy: #1b365d;
+      --spms-blue: #0066cc;
+      --spms-dark: #0f172a;
+      --spms-slate: #64748b;
+      --spms-bg: #f1f5f9;
+      --spms-card: #ffffff;
+      --spms-border: #cbd5e1;
+      --spms-success: #15803d;
+      --spms-error: #b91c1c;
+    }
 
-<style>
-body{
-    font-family:Arial,sans-serif;
-    background:#f5f5f5;
-    margin:0;
-    padding:15px;
-}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    }
 
-.container{
-    max-width:500px;
-    margin:auto;
-    background:#fff;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 0 10px rgba(0,0,0,.1);
-}
+    body {
+      background-color: var(--spms-bg);
+      color: var(--spms-dark);
+      padding: 30px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
 
-h2{
-    text-align:center;
-}
+    .container {
+      width: 100%;
+      max-width: 540px;
+    }
 
-label{
-    display:block;
-    margin-top:10px;
-}
+    .card {
+      background: var(--spms-card);
+      border-radius: 12px;
+      padding: 32px 28px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      border: 1px solid var(--spms-border);
+    }
 
-input,
-select,
-textarea{
-    width:100%;
-    padding:10px;
-    margin-top:5px;
-    border:1px solid #ccc;
-    border-radius:5px;
-    box-sizing:border-box;
-}
+    .header {
+      text-align: center;
+      margin-bottom: 26px;
+      border-bottom: 2px solid #e2e8f0;
+      padding-bottom: 18px;
+    }
 
-button{
-    width:100%;
-    margin-top:15px;
-    padding:12px;
-    background:#28a745;
-    color:white;
-    border:none;
-    border-radius:5px;
-    font-size:16px;
-}
+    .header .company-tag {
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--spms-blue);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
 
-button:hover{
-    background:#218838;
-}
-</style>
+    .header h1 {
+      font-size: 19px;
+      color: var(--spms-navy);
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .header p {
+      font-size: 13px;
+      color: var(--spms-slate);
+      margin-top: 4px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #334155;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 13px;
+      border: 1px solid var(--spms-border);
+      border-radius: 7px;
+      font-size: 14px;
+      outline: none;
+      background: #fff;
+      color: var(--spms-dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--spms-navy);
+      box-shadow: 0 0 0 3px rgba(27, 54, 93, 0.12);
+    }
+
+    input[readonly] {
+      background-color: #f8fafc;
+      color: #64748b;
+      cursor: not-allowed;
+    }
+
+    .row {
+      display: flex;
+      gap: 12px;
+    }
+
+    .row .form-group {
+      flex: 1;
+    }
+
+    .hours-container {
+      background-color: #f8fafc;
+      border: 1px dashed var(--spms-border);
+      border-radius: 7px;
+      padding: 10px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .hours-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .hours-badge {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--spms-navy);
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--spms-navy);
+      color: #ffffff;
+      border: none;
+      padding: 13px;
+      font-size: 15px;
+      font-weight: 700;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-submit:hover {
+      background: #152c4d;
+    }
+
+    .btn-submit:disabled {
+      background: #94a3b8;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      padding: 14px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 13px;
+      line-height: 1.5;
+      display: none;
+    }
+
+    .alert.success {
+      background: #dcfce7;
+      color: var(--spms-success);
+      border: 1px solid #bbf7d0;
+    }
+
+    .alert.error {
+      background: #fee2e2;
+      color: var(--spms-error);
+      border: 1px solid #fecaca;
+    }
+
+    .footer-note {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 11px;
+      color: var(--spms-slate);
+    }
+  </style>
 </head>
-
 <body>
 
 <div class="container">
+  <div class="card">
+    <div class="header">
+      <div class="company-tag">SETPOINT MANAGEMENT SERVICES OPC</div>
+      <h1>SPMS OVERTIME SYSTEM</h1>
+      <p>Official Overtime Request Portal</p>
+    </div>
 
-<h2>OT Request Form</h2>
+    <form id="spmsOtForm">
+      <!-- Employee Dropdown -->
+      <div class="form-group">
+        <label for="employeeSelect">Employee Name *</label>
+        <select id="employeeSelect" required>
+          <option value="">Loading active personnel...</option>
+        </select>
+      </div>
 
-<form id="otForm">
+      <!-- Department (Read-only / Auto-filled) -->
+      <div class="form-group">
+        <label for="department">Department</label>
+        <input type="text" id="department" readonly placeholder="Auto-populated from masterlist">
+      </div>
 
-<label>Employee Name</label>
-<input type="text" id="employee" required>
+      <!-- OT Date -->
+      <div class="form-group">
+        <label for="otDate">Overtime Date *</label>
+        <input type="date" id="otDate" required>
+      </div>
 
-<label>Department</label>
-<select id="department" required>
-<option value="">Select Department</option>
-<option>Kitchen</option>
-<option>Operations</option>
-<option>Warehouse</option>
-<option>Logistics</option>
-<option>HR</option>
-<option>Admin</option>
-</select>
+      <!-- Time In & Time Out -->
+      <div class="row">
+        <div class="form-group">
+          <label for="otIn">OT In *</label>
+          <input type="time" id="otIn" required>
+        </div>
+        <div class="form-group">
+          <label for="otOut">OT Out *</label>
+          <input type="time" id="otOut" required>
+        </div>
+      </div>
 
-<label>OT Date</label>
-<input type="date" id="otdate" required>
+      <!-- Calculated Hours Counter -->
+      <div class="hours-container">
+        <span class="hours-title">Total Overtime Hours:</span>
+        <span id="hoursDisplay" class="hours-badge">0.00 hrs</span>
+      </div>
 
-<label>OT Start</label>
-<input type="datetime-local" id="otin" required>
+      <!-- Reason for OT -->
+      <div class="form-group">
+        <label for="reason">Work Accomplishment / Justification *</label>
+        <textarea id="reason" rows="3" placeholder="State operational justification or task completed..." required></textarea>
+      </div>
 
-<label>OT End</label>
-<input type="datetime-local" id="otout" required>
+      <button type="submit" id="submitBtn" class="btn-submit">Submit Overtime Request</button>
+    </form>
 
-<label>Reason</label>
-<textarea id="reason" rows="4" required></textarea>
+    <div id="alertBox" class="alert"></div>
 
-<button type="submit">
-Submit OT Request
-</button>
-
-</form>
-
+    <div class="footer-note">
+      Synchronized with SPMS Master Database
+    </div>
+  </div>
 </div>
 
 <script>
+  // =========================================================================
+  // ILAGAY DITO ANG IYONG NAKOPYANG APPS SCRIPT WEB APP URL (/exec):
+  // =========================================================================
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh7ShrQ67brrZb4yEPrccpI6Vu6lvSL9ddVlvu-OJUwUkTqBEerhwwGUUlp0geBcSe/exec";
 
-const scriptURL =
-"https://script.google.com/macros/s/AKfycbzM20A1CyIYC47UEcFw0aGwnOMd4k3wtwCsjq4WMbL79KLhFjrXV-eGwr0Wblt5Z6k8/exec";
+  let employeeList = [];
 
-document.getElementById("otForm")
-.addEventListener("submit",function(e){
+  const empSelect = document.getElementById("employeeSelect");
+  const deptInput = document.getElementById("department");
+  const otDateInput = document.getElementById("otDate");
+  const otInInput = document.getElementById("otIn");
+  const otOutInput = document.getElementById("otOut");
+  const hoursDisplay = document.getElementById("hoursDisplay");
+  const submitBtn = document.getElementById("submitBtn");
+  const alertBox = document.getElementById("alertBox");
 
-e.preventDefault();
+  // I-set ang default date sa kasalukuyang petsa
+  otDateInput.value = new Date().toISOString().split("T")[0];
 
-let start =
-new Date(document.getElementById("otin").value);
+  // 1. Kuhanin ang listahan ng mga empleyado via doGet()
+  async function loadEmployees() {
+    try {
+      const response = await fetch(SCRIPT_URL);
+      const res = await response.json();
+      if (res.status === "success" && Array.isArray(res.data)) {
+        employeeList = res.data;
+        empSelect.innerHTML = '<option value="">-- Select Active Employee --</option>';
+        employeeList.forEach(emp => {
+          const opt = document.createElement("option");
+          opt.value = emp.name;
+          opt.textContent = `${emp.name} [${emp.id || "SPMS"}]`;
+          opt.dataset.dept = emp.department;
+          empSelect.appendChild(opt);
+        });
+      } else {
+        throw new Error(res.message || "Failed to parse data");
+      }
+    } catch (err) {
+      empSelect.innerHTML = '<option value="">Failed to load employee list</option>';
+      console.error("Fetch error:", err);
+    }
+  }
 
-let end =
-new Date(document.getElementById("otout").value);
+  // 2. Auto-fill Department kapag pumili ng empleyado
+  empSelect.addEventListener("change", function() {
+    const selectedOption = this.options[this.selectedIndex];
+    deptInput.value = selectedOption.dataset.dept || "";
+  });
 
-let totalhours =
-((end-start)/1000/60/60).toFixed(2);
+  // 3. Kwentahin ang Total OT Hours nang live
+  function calculateHours() {
+    const tIn = otInInput.value;
+    const tOut = otOutInput.value;
+    if (tIn && tOut) {
+      const start = new Date("1970-01-01T" + tIn + ":00");
+      const end = new Date("1970-01-01T" + tOut + ":00");
+      let diffMs = end - start;
+      if (diffMs < 0) diffMs += 24 * 60 * 60 * 1000; // Lampas hatinggabi
+      const total = (diffMs / (1000 * 60 * 60)).toFixed(2);
+      hoursDisplay.textContent = `${total} hrs`;
+      return total;
+    }
+    hoursDisplay.textContent = "0.00 hrs";
+    return 0;
+  }
 
-const data = {
+  otInInput.addEventListener("input", calculateHours);
+  otOutInput.addEventListener("input", calculateHours);
 
-employee:
-document.getElementById("employee").value,
+  // 4. Form submission papuntang doPost()
+  document.getElementById("spmsOtForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting to SPMS Database...";
+    alertBox.style.display = "none";
 
-department:
-document.getElementById("department").value,
+    const payload = {
+      employeeName: empSelect.value,
+      department: deptInput.value,
+      otDate: otDateInput.value,
+      otIn: otInInput.value,
+      otOut: otOutInput.value,
+      totalHours: calculateHours(),
+      reason: document.getElementById("reason").value
+    };
 
-otdate:
-document.getElementById("otdate").value,
+    try {
+      const response = await fetch(SCRIPT_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+      });
+      const result = await response.json();
 
-otin:
-document.getElementById("otin").value,
+      if (result.status === "success") {
+        alertBox.className = "alert success";
+        alertBox.innerHTML = `<strong>Entry Recorded Successfully!</strong><br>Control Number: <strong>${result.controlNo}</strong><br>Your request is now in the supervisor review queue.`;
+        alertBox.style.display = "block";
+        document.getElementById("spmsOtForm").reset();
+        deptInput.value = "";
+        hoursDisplay.textContent = "0.00 hrs";
+        otDateInput.value = new Date().toISOString().split("T")[0];
+      } else {
+        throw new Error(result.message || "Submission failed.");
+      }
+    } catch (err) {
+      alertBox.className = "alert error";
+      alertBox.textContent = "Submission Error: " + err.message;
+      alertBox.style.display = "block";
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Overtime Request";
+    }
+  });
 
-otout:
-document.getElementById("otout").value,
-
-totalhours:
-totalhours,
-
-reason:
-document.getElementById("reason").value
-
-};
-
-fetch(scriptURL,{
-method:"POST",
-body:JSON.stringify(data)
-})
-.then(response=>response.json())
-.then(result=>{
-
-alert("OT Request Submitted!");
-
-document.getElementById("otForm").reset();
-
-})
-.catch(error=>{
-
-alert("Submission Failed");
-
-});
-
-});
+  // Simulan ang pagkuha ng tauhan
+  loadEmployees();
 </script>
 
 </body>
