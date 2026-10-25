@@ -1,1 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital OT Form</title>
 
+<style>
+body{
+    font-family:Arial,sans-serif;
+    background:#f5f5f5;
+    margin:0;
+    padding:15px;
+}
+
+.container{
+    max-width:500px;
+    margin:auto;
+    background:#fff;
+    padding:20px;
+    border-radius:10px;
+    box-shadow:0 0 10px rgba(0,0,0,.1);
+}
+
+h2{
+    text-align:center;
+}
+
+label{
+    display:block;
+    margin-top:10px;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #ccc;
+    border-radius:5px;
+    box-sizing:border-box;
+}
+
+button{
+    width:100%;
+    margin-top:15px;
+    padding:12px;
+    background:#28a745;
+    color:white;
+    border:none;
+    border-radius:5px;
+    font-size:16px;
+}
+
+button:hover{
+    background:#218838;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2>OT Request Form</h2>
+
+<form id="otForm">
+
+<label>Employee Name</label>
+<input type="text" id="employee" required>
+
+<label>Department</label>
+<select id="department" required>
+<option value="">Select Department</option>
+<option>Kitchen</option>
+<option>Operations</option>
+<option>Warehouse</option>
+<option>Logistics</option>
+<option>HR</option>
+<option>Admin</option>
+</select>
+
+<label>OT Date</label>
+<input type="date" id="otdate" required>
+
+<label>OT Start</label>
+<input type="datetime-local" id="otin" required>
+
+<label>OT End</label>
+<input type="datetime-local" id="otout" required>
+
+<label>Reason</label>
+<textarea id="reason" rows="4" required></textarea>
+
+<button type="submit">
+Submit OT Request
+</button>
+
+</form>
+
+</div>
+
+<script>
+
+const scriptURL =
+"https://https://script.google.com/macros/s/AKfycbzOzZeW3UulxPr5FUxiI9uhHNmyW0xAXjweJALbqHRQgMpK0PlqXsd8QiqY_tKvcuwI/exec";
+
+document.getElementById("otForm")
+.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let start =
+new Date(document.getElementById("otin").value);
+
+let end =
+new Date(document.getElementById("otout").value);
+
+let totalhours =
+((end-start)/1000/60/60).toFixed(2);
+
+const data = {
+
+employee:
+document.getElementById("employee").value,
+
+department:
+document.getElementById("department").value,
+
+otdate:
+document.getElementById("otdate").value,
+
+otin:
+document.getElementById("otin").value,
+
+otout:
+document.getElementById("otout").value,
+
+totalhours:
+totalhours,
+
+reason:
+document.getElementById("reason").value
+
+};
+
+fetch(scriptURL,{
+method:"POST",
+body:JSON.stringify(data)
+})
+.then(response=>response.json())
+.then(result=>{
+
+alert("OT Request Submitted!");
+
+document.getElementById("otForm").reset();
+
+})
+.catch(error=>{
+
+alert("Submission Failed");
+
+});
+
+});
+</script>
+
+</body>
+</html>
